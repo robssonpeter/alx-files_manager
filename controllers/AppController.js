@@ -1,7 +1,7 @@
 const redisClient = require('../utils/redis');
 const dbClient = require('../utils/db');
 
-class AppController extends dbClient {
+class AppController {
   getStatus() {
     return {
       redis: redisClient.isAlive(),
@@ -11,8 +11,8 @@ class AppController extends dbClient {
 
   async getStats() {
     try{
-        const userCount = await this.nbUsers();
-        const fileCount = await this.nbFiles();
+        const userCount = await dbClient.nbUsers();
+        const fileCount = await dbClient.nbFiles();
         return {
           users: userCount,
           files: fileCount,
