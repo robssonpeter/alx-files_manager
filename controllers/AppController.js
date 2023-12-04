@@ -10,12 +10,17 @@ class AppController extends dbClient {
   }
 
   async getStats() {
-    const userCount = await this.nbUsers();
-    const fileCount = await this.nbFiles();
-    return {
-      users: userCount,
-      files: fileCount,
-    };
+    try{
+        const userCount = await this.nbUsers();
+        const fileCount = await this.nbFiles();
+        return {
+          users: userCount,
+          files: fileCount,
+        };
+    }catch(error){
+        console.log(error);
+    }
+    
   }
 }
 
