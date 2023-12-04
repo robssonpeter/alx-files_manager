@@ -9,14 +9,14 @@ class DBClient{
         this.client.connect();
     }
 
-    isAlive(){
+    async isAlive(){
         try {
-            this.client.connect();
+            await this.client.connect();
             return true;
           } catch (error) {
             return false;
           } finally {
-            this.client.close();
+            await this.client.close();
           }
     }
 
