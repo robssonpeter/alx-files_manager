@@ -31,6 +31,7 @@ class AppController {
     } catch (error) {
       console.log(error);
     } */
+    return { testing: true }
     return {
       users: this.userCount,
       files: this.filesCount,
