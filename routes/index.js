@@ -13,7 +13,10 @@ router.get('/status', (req, res) => {
 });
 
 router.get('/stats', (req, res) => {
-  res.send(appController.getStats());
+  //res.send('hello');
+  appController.getStats().then((response) => {
+    res.send(response);
+  });
 });
 
 router.post('/users', (req, res) => {

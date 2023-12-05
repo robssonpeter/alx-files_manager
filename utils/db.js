@@ -18,9 +18,9 @@ class DBClient {
       return true;
     } catch (error) {
       return false;
-    } finally {
+    }/*  finally {
       await this.client.close();
-    }
+    } */
   }
 
   async nbUsers() {
@@ -30,9 +30,11 @@ class DBClient {
       const usersCollection = db.collection('users');
       const count = await usersCollection.countDocuments();
       return count;
-    } finally {
+    }catch(error){
+      console.log(error);
+    } /* finally {
       await this.client.close();
-    }
+    } */
   }
 
   async nbFiles() {
@@ -42,9 +44,11 @@ class DBClient {
       const filesCollection = db.collection('files');
       const count = await filesCollection.countDocuments();
       return count;
-    } finally {
+    }catch(error){
+      console.log(error);
+    }/* finally {
       await this.client.close();
-    }
+    } */
   }
 }
 
