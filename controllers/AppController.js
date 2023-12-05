@@ -17,7 +17,7 @@ class AppController {
   }
 
   async getStats() {
-    return { testing: true };
+  
     // const userCount = await dbClient.nbUsers();
     dbClient.nbUsers().then((response) => {
       this.userCount = response;
