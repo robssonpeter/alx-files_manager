@@ -24,7 +24,7 @@ class DBClient {
 
   async nbUsers() {
     try {
-      await this.client.connect();
+      await this.client.connect({ useUnifiedTopology: true });
       const db = this.client.db();
       const usersCollection = db.collection('users');
       const count = await usersCollection.countDocuments();
