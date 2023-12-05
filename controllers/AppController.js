@@ -5,7 +5,6 @@ class AppController{
   constructor(){
     this.redisAlive = redisClient.isAlive();
     dbClient.isAlive().then(response => {
-        console.log('things are happening here now');
         this.dbAlive = response;
     })
   }
