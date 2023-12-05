@@ -1,11 +1,18 @@
 const redisClient = require('../utils/redis');
 const dbClient = require('../utils/db');
 
-class AppController {
+class AppController{
+  constructor(){
+    this.redisAlive = redisClient.isAlive();
+    dbClient.isAlive().then(response => {
+        console.log('things are happening here now');
+        this.dbAlive = response;
+    })
+  }
   getStatus() {
     return {
-      redis: redisClient.isAlive(),
-      db: this.isAlive(),
+      redis: this.redisAlive,
+      db: this.dbAlive,
     };
   }
 
