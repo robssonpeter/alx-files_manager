@@ -17,27 +17,25 @@ class AppController {
   }
 
   async getStats() {
-  
-    // const userCount = await dbClient.nbUsers();
-    console.log(dbClient);
-    dbClient.nbUsers().then((response) => {
-      this.userCount = response;
-    });
-    // const fileCount = await dbClient.nbFiles();
-    dbClient.nbFiles().then((response) => {
-      this.filesCount = response;
-    });
-    /* try {
-      const userCount = await dbClient.nbUsers();
-      const fileCount = await dbClient.nbFiles();
-    } catch (error) {
-      console.log(error);
-    } */
+    try {
+      // const userCount = await dbClient.nbUsers();
+      console.log(dbClient);
+      dbClient.nbUsers().then((response) => {
+        this.userCount = response;
+      });
+      // const fileCount = await dbClient.nbFiles();
+      dbClient.nbFiles().then((response) => {
+        this.filesCount = response;
+      });
 
-    return {
-      users: this.userCount,
-      files: this.filesCount,
-    };
+      return {
+        users: this.userCount,
+        files: this.filesCount,
+      };
+    }catch(error){
+      console.log(error);
+    }
+    
   }
 }
 
