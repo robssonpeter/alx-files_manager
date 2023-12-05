@@ -7,14 +7,14 @@ class DBClient {
     const database = process.env.DB_DATABASE ? process.env.DB_DATABASE : 'files_manager';
     const url = `mongodb://${host}:${port}`;
     this.database = database;
-    this.client = new MongoClient(url, { useUnifiedTopology: true});
+    this.client = new MongoClient(url, { useUnifiedTopology: true });
     /* this.client.db(database);
     this.client.connect(); */
   }
 
-  async isAlive() {
+  isAlive() {
     try {
-      await this.client.connect();
+      this.client.connect();
       return true;
     } catch (error) {
       return false;
@@ -30,11 +30,12 @@ class DBClient {
       const usersCollection = db.collection('users');
       const count = await usersCollection.countDocuments();
       return count;
-    }catch(error){
+    } catch (error) {
       console.log(error);
     } /* finally {
       await this.client.close();
     } */
+    return null;
   }
 
   async nbFiles() {
@@ -44,11 +45,12 @@ class DBClient {
       const filesCollection = db.collection('files');
       const count = await filesCollection.countDocuments();
       return count;
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }/* finally {
       await this.client.close();
     } */
+    return null;
   }
 }
 

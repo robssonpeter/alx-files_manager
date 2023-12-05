@@ -6,9 +6,10 @@ class AppController {
     this.redisAlive = redisClient.isAlive();
     this.userCount = 0;
     this.filesCount = 0;
-    dbClient.isAlive().then((response) => {
+    /* dbClient.isAlive().then((response) => {
       this.dbAlive = response;
-    });
+    }); */
+    this.dbAlive = dbClient.isAlive();
   }
 
   getStatus() {
