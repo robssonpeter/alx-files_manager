@@ -9,7 +9,6 @@ const userController = new UsersController();
 router.use(express.json());
 
 router.get('/status', (req, res) => {
-  res.send('Hello burton');
   res.send(appController.getStatus());
 });
 
