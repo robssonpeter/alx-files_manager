@@ -37,7 +37,7 @@ class AuthController extends AppController {
     // return {hello: 'world'}
     return collection.findOne({ email: this.email }, projectionObject).then((user) => {
       if (!user) {
-        responseObject.status(400).send({ error: 'Unauthorized' });
+        responseObject.status(401).send({ error: 'Unauthorized' });
       }
       // return {db_password: user.password, sent_password: sha1(this.password)}
       if (sha1(this.password) === user.password) {
@@ -51,7 +51,7 @@ class AuthController extends AppController {
           responseObject.status(200).send({ token });
         });
       }
-      return responseObject.status(400).send({ error: 'No matching credentials' });
+      return responseObject.status(401).send({ error: 'Unauthorized' });
     });
   }
 
@@ -59,9 +59,17 @@ class AuthController extends AppController {
     this.token = token;
     if (token) {
       const key = `auth_${this.token}`;
-      redisClient.del(key).then(() => {
-        response.send('');
+      redisClient.get(key).then((userId) => {
+        if (userId) {
+          redisClient.del(key).then(() => {
+            response.status(204).send('');
+          });
+        } else {
+          response.status(401).send({ error: 'Unauthorized' });
+        }
       });
+    } else {
+      response.status(401).send({ error: 'Unauthorized' });
     }
   }
 
@@ -86,7 +94,7 @@ class AuthController extends AppController {
           responseObject.send(res);
         });
       } else {
-        responseObject.status(400).send({ error: 'Unauthorized' });
+        responseObject.status(401).send({ error: 'Unauthorized' });
       }
     });
   }
