@@ -104,6 +104,33 @@ class FilesController {
     const validation = 'Files is validated';
     return responseObject.status(200).send({ validation });
   }
+
+  getShow(id, responseObject) {
+    const returnProjection = {
+      _id: 0,
+      id: '$_id',
+      userId: 1,
+      name: 1,
+      type: 1,
+      isPublic: 1,
+      parentId: 1,
+    };
+    this.collection.findOne({ _id: ObjectId(id) }, {
+      projection: returnProjection,
+    }).then((result) => {
+      if (result) {
+        return responseObject.status(200).send(result);
+      }
+      return responseObject.status(404).send({ error: 'Not found' });
+    });
+  }
+
+  getIndex(userId, responseObject, parentId = 0) {
+    this.collection.find({
+      parentId,
+      userId,
+    }).then((result) => responseObject.status().send(result.toArray()));
+  }
 }
 
 module.exports = FilesController;

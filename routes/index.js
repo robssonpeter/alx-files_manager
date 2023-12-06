@@ -93,4 +93,38 @@ router.post('/files', (req, res) => {
   }
 });
 
+router.get('/files/:id', (req, res) => {
+  const headers = Object.keys(req.headers);
+  const { id } = req.params;
+  if (headers.indexOf('x-token') > -1) {
+    const token = req.headers['x-token'];
+    const key = `auth_${token}`;
+    redisClient.get(key).then((userId) => {
+      if (userId) {
+        fileController.getShow(id, res);
+      } else {
+        // request can not be allowed
+        res.status(401).send({ error: 'Unauthorized' });
+      }
+    });
+  }
+});
+
+router.get('/files', (req, res) => {
+  const headers = Object.keys(req.headers);
+  const { parentId } = req.query;
+  if (headers.indexOf('x-token') > -1) {
+    const token = req.headers['x-token'];
+    const key = `auth_${token}`;
+    redisClient.get(key).then((userId) => {
+      if (userId) {
+        fileController.getIndex(userId, res, parentId);
+      } else {
+        // request can not be allowed
+        res.status(401).send({ error: 'Unauthorized' });
+      }
+    });
+  }
+});
+
 module.exports = router;
