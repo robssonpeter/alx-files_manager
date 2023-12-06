@@ -3,10 +3,13 @@ const dbClient = require('../utils/db');
 
 class UsersController {
   async postNew(email, password) {
-    const collection = dbClient.collection('users');
+    /* console.log(dbClient);
+    return {} */
+    const database = dbClient.client.db(dbClient.database);
+    const collection = database.collection('users');
     // check if the user exists
     this.email = email;
-    this.passwor = password;
+    this.password = password;
     return collection.find({ email: this.email }).toArray().then((user) => {
       if (!user.length) {
         // create a user account
@@ -17,7 +20,7 @@ class UsersController {
       } else {
         return { error: 'Already exist' };
       }
-      return collection.findOne({ email: this.email });
+      return collection.findOne({ email: this.email }, { projection: { email: 1, _id: 0, id: '$_id' } });
     });
   }
 }
