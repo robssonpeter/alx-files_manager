@@ -2,6 +2,8 @@ const express = require('express');
 const AppController = require('../controllers/AppController');
 const UsersController = require('../controllers/UsersController');
 const AuthController = require('../controllers/AuthController');
+const FilesController = require('../controllers/FilesController');
+const redisClient = require('../utils/redis');
 
 const router = express.Router();
 router.use(express.json());
@@ -9,6 +11,7 @@ router.use(express.json());
 const appController = new AppController();
 const userController = new UsersController();
 const authController = new AuthController();
+const fileController = new FilesController();
 
 router.get('/status', (req, res) => {
   res.send(appController.getStatus());
@@ -68,6 +71,25 @@ router.get('/users/me', (req, res) => {
     authController.getMe(token, res);
   } else {
     res.send('No token sent');
+  }
+});
+
+router.post('/files', (req, res) => {
+  const headers = Object.keys(req.headers);
+  if (headers.indexOf('x-token') > -1) {
+    // check if the token has a session on redis
+    const token = req.headers['x-token'];
+    const key = `auth_${token}`;
+    redisClient.get(key).then((userId) => {
+      if (userId) {
+        // we can proceed with the request
+        const file = req.body;
+        // res.send(file)
+        fileController.postUpload(file, userId, res);
+      } else {
+        // request can not be allowed
+      }
+    });
   }
 });
 
