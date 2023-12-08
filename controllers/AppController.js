@@ -3,18 +3,20 @@ const dbClient = require('../utils/db');
 
 class AppController {
   constructor() {
+    if (redisClient.redisError) {
+      this.redisAlive = false;
+    } else {
+      this.redisAlive = true;
+    }
     this.redisAlive = redisClient.isAlive();
     this.userCount = 0;
     this.filesCount = 0;
-    /* dbClient.isAlive().then((response) => {
-      this.dbAlive = response;
-    }); */
     this.dbAlive = dbClient.isAlive();
   }
 
   getStatus() {
     return {
-      redis: this.redisAlive,
+      redis: redisClient.redisAlive,
       db: this.dbAlive,
     };
   }
