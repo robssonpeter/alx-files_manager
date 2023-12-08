@@ -34,7 +34,7 @@ router.post('/users', (req, res) => {
   } else {
     // query into the functin to get the response
     userController.postNew(email, password).then((response) => {
-      res.status(response.error ? 400 : 200).send(response);
+      res.status(response.error ? 400 : 201).send(response);
     });
   }
 });
